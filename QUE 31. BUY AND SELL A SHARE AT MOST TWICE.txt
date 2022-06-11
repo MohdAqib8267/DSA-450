@@ -1,0 +1,55 @@
+Buy and Sell a Share at most twice--
+
+In daily share trading, a buyer buys shares in the morning and sells them on the same day. If the trader is allowed to make at most 2 transactions in a day, whereas the second transaction can only start after the first one is complete (Buy->sell->Buy->sell). The stock prices throughout the day  are represented in the form of an array price. 
+
+Given an array price of size N, find out the maximum profit that a share trader could have made.
+
+Example 1:
+
+Input:
+6
+10 22 5 75 65 80
+Output:
+87
+Explanation:
+Trader earns 87 as sum of 12, 75 
+Buy at 10, sell at 22, 
+Buy at 5 and sell at 80
+
+CODE--
+
+int maxProfit(vector<int>&price){
+    //Write your code here..
+    int n=price.size();
+    int sell[n];
+    sell[0]=0;
+    int minPrice=price[0];
+    int maxProfit=0;
+    for(int i=1;i<n;i++){
+        if(price[i]-minPrice > maxProfit){
+            sell[i]=maxProfit=price[i]-minPrice;
+        }
+        else{
+            sell[i]=maxProfit;
+            minPrice=min(minPrice,price[i]);
+        }
+    }
+    int buy[n];
+    buy[n-1]=0;
+     maxProfit=0;
+    int maxPrice=price[n-1];
+    for(int i=n-2;i>=0;i--){
+        if(maxPrice-price[i] > maxProfit){
+            buy[i]=maxProfit=maxPrice-price[i];
+        }
+        else{
+            buy[i]=maxProfit;
+            maxPrice=max(maxPrice,price[i]);
+        }
+    }
+    maxProfit=0;
+    for(int i=0;i<n;i++){
+        maxProfit=max(maxProfit,buy[i]+sell[i]);
+    }
+    return maxProfit;
+}

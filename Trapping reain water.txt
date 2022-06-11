@@ -1,0 +1,47 @@
+Que 34-->
+
+Given an array arr[] of N non-negative integers representing the height of blocks. If width of each block is 1, compute how much water can be trapped between the blocks during the rainy season. 
+ 
+
+Example 1:
+
+Input:
+N = 6
+arr[] = {3,0,0,2,0,4}
+Output:
+10
+Explanation: 
+Given an array arr[] of N non-negative integers representing the height of blocks. If width of each block is 1, compute how much water can be trapped between the blocks during the rainy season. 
+ 
+
+Example 1:
+
+Input:
+N = 6
+arr[] = {3,0,0,2,0,4}
+Output:
+10
+
+code-->
+
+ long long trappingWater(int arr[], int n){
+        // code here
+       int Left_Max[n];
+       int Right_Max[n];
+       Left_Max[0] = arr[0];
+       for(int i = 1 ; i < n; i++)
+       {
+           Left_Max[i] = max(arr[i],Left_Max[i-1]);
+       }
+       Right_Max[n-1] = arr[n-1];
+       for(int i = n-2 ; i >= 0 ; i--)
+       {
+           Right_Max[i] = max(arr[i],Right_Max[i+1]);
+       }
+       long long int water =0;
+       for(int i = 1 ; i < n-1 ; i++)
+       {
+           water = water + min(Left_Max[i],Right_Max[i]) - arr[i];
+       }
+       return water;
+    }

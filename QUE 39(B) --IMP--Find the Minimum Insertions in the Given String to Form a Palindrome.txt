@@ -1,0 +1,187 @@
+Find the Minimum Insertions in the Given String to Form a Palindrome
+
+statement--
+One day, Ninja’s teacher gave him an assignment in which he had to find the minimum insertions in the given string to make it a palindrome. Help ninja to pass the assignment.
+
+For example-
+
+In “a”, the number of insertions required is 0 as string is already in palindrome.
+In “ab”, the number of insertions required is 1 to make it a palindromic string. There are two ways to do it “aba”, “bab”.
+In “bad”, the number of insertions required is 2 to make it a palindromic string. One of the possible palindromic strings formed is “badab”
+------------------------------------------------------------------------------------------
+Algorithm---->
+The algorithm for the recursive (see Recursion) approach is as follows:
+
+Define the function minInsertionHelper(S, START, END):
+Function description:
+It takes three parameters, i.e., the string ‘S’, starting index ‘START’, and ending index ‘END’.
+The function returns the answer for substring starting from ‘START’ to ‘END’.
+Working:
+If START  > END:
+Return 0.
+If START ==  END:
+Return 0.
+If S[START] == S[END]:
+Return minInsertionHelper(S, START + 1, END - 1).
+Else:
+Return min(minInsertionHelper(S, START + 1, END), minInsertionHelper(S, START, END - 1)).
+Call minInsertionHeper(S, 0, S.LENGTH - 1) from minInsertion().
+_---------------------------------------------------------------------------------------------
+
+code--
+#include <iostream>
+using namespace std;
+
+// Recursive Helper Function.
+int minInsertionHelper(string &s, int start, int end)
+{
+
+    // Base conditions to terminate the recursive call.
+    if (start > end)
+        return 0;
+    if (start == end)
+        return 0;
+
+    // If starting and ending index have same value.
+    if (s[start] == s[end])
+    {
+        return minInsertionHelper(s, start + 1, end - 1);
+    }
+    else
+    {
+        return min(minInsertionHelper(s, start + 1, end), minInsertionHelper(s, start, end - 1)) + 1;
+    }
+}
+
+// Function to calculate minimum number of insertions required for given string to be a palindrome.
+int minInsertion(string &s) {
+    return minInsertionHelper(s, 0, s.length() - 1);
+}
+
+int main()
+{
+    // Taking string as an input.
+    string s;
+    cin >> s;
+
+    // Call function.
+    int ans = minInsertion(s);
+
+    // Print the final answer.
+    cout << ans;
+    return 0;
+}
+-----------------------------------------------------------------
+Complexity Analysis
+Time Complexity
+
+O(2 ^ N), where 'N' is the length of the string.
+
+In the worst case, at every call, we will be calling two additional recursive calls. Hence, its time complexity is O(2^N).
+
+Space Complexity
+
+O(N), where ‘N’ is the size of the string.
+
+Recursive stack takes O(N) extra space.
+___________________________________________________________________________________________________________________________________________
+--------------------------------------------------------------
+-----------------------------------------------------------------
+------------------------------------------------------------------
+DP SOLUTION--
+---------------------------------------------------------
+Algorithm
+The algorithm of the dynamic programming approach is as follows:
+
+Define the function longestCommonSubsequence(s,r):
+Function Description:
+It takes two parameters, i.e., strings ‘S’ and ‘R’.
+This function returns the length of the longest common subsequence of ‘S’ and ‘R’.
+Working:
+Create 2-dimensional array DP[S.LENGTH()+1][R.LENGTH()+1].
+Iterate loop for i = 0 to i < = S.LENGTH():
+Iterate loop for j = 0 to j <= R.LENGTH():
+If i == 0 or j == 0:
+DP[i][j] = 0.
+Else if S[i - 1] == R[j - 1]:
+DP[i][j] = DP[i - 1][j - 1] + 1.
+Else:
+DP[i][j] = max(DP[i - 1][j], DP[i][j - 1]);
+Return DP[S.SIZE()][R.SIZE()].
+Define a function minInsertion(S):
+Function Description:
+It takes string ‘S’ as a parameter.
+It returns the minimum count of insertions required.
+Working:
+String R = S.
+Reverse the string ‘R’.
+MAX_LEN = longestCommonSubsequence(S , R).
+Return S.LENGTH() - MAX_LEN.
+Call the minInsertion(S).
+
+-----------------------------
+Program in C++
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+// Function to find LCS of string ‘S’ and ‘R’.
+int longestCommonSubsequence(string s, string r)
+{
+
+    // Creating 2-dimensional ‘DP’ array to store the result.
+    int dp[s.length() + 1][r.length() + 1];
+    for (int i = 0; i <= s.size(); i++)
+    {
+        for (int j = 0; j <= r.size(); j++)
+        {
+            if (i == 0 || j == 0)
+                dp[i][j] = 0;
+
+            else if (s[i - 1] == r[j - 1])
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+
+            else
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+        }
+    }
+    return dp[s.length()][r.length()];
+}
+
+int minInsertion(string s){
+   // Creating a string to store the reverse of string ‘S’.
+    string r = s;
+    reverse(r.begin(), r.end());
+
+    // Call function.
+    int maxlen = longestCommonSubsequence(s, r);
+
+    // Print answer.
+    return s.length() - maxlen;
+}
+
+int main()
+{
+    // Taking string as an input.
+    string s;
+    cin >> s;
+    // Calling ‘minInsertion()’ function.
+    int ans = minimumInsertions(s);
+
+    // Print answer.
+    cout << ans;
+    return 0;
+}
+_____________________________________________________
+Complexity Analysis
+Time Complexity
+
+O(N^2), where ‘N’ is the size of the string.
+
+Iterating a loop inside another loop takes N^2 time.
+
+Space Complexity
+
+O(N^2), where ‘N’ is the size of the string.
+
+Creating a 2-dimensional array takes (N^2) space

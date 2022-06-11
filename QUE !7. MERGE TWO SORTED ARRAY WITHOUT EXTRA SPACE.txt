@@ -1,0 +1,53 @@
+Merge Without Extra Space----->>>
+
+Given two sorted arrays arr1[] of size N and arr2[] of size M. Each array is sorted in non-decreasing order. Merge the two arrays into one sorted array in non-decreasing order without using any extra space.
+
+
+Example 1:
+
+Input:
+N = 4, M = 5
+arr1[] = {1, 3, 5, 7}
+arr2[] = {0, 2, 6, 8, 9}
+Output: 0 1 2 3 5 6 7 8 9
+Explanation: Since you can't use any 
+extra space, modify the given arrays
+to form 
+arr1[] = {0, 1, 2, 3}
+arr2[] = {5, 6, 7, 8, 9}
+
+
+code___________________	
+void merge(int arr1[], int arr2[], int n, int m) {
+	    // code here
+	    vector<int>ans;
+	    int i=0;
+	    int j=0;
+	    while(i<n and j<m){
+	        if(arr1[i]<arr2[j]){
+	            ans.push_back(arr1[i]);
+	            i++;
+	        }
+	        else{
+	            ans.push_back(arr2[j]);
+	            j++;
+	        }
+	    }
+	    while(i<n){
+	        ans.push_back(arr1[i]);
+	        i++;
+	    }
+	    while(j<m){
+	        ans.push_back(arr2[j]);
+	        j++;
+	    }
+	     for(int i=0;i<n;i++){
+            arr1[i]=ans[i];
+        }
+        int k=n;
+        for(int i=0;i<m;i++){
+            arr2[i]=ans[k];
+            k++;
+        }
+	    
+	}
